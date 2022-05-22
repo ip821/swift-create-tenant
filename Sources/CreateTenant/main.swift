@@ -15,23 +15,25 @@ struct App {
         }
 
         do {
-
             let loginResponse = try await httpClient.login(
                     tenantDomainName: "kidscoolshop",
                     userNameOrEMail: "admin",
-                    password: "1234"
+                    password: "123"
             )
 
-            let token: String
+            let accessToken: String
+
             switch loginResponse {
-            case .failed(let errorCode):
+            case let .failed(errorCode):
                 print("Login failed, error code: \(errorCode)")
                 return
 
-            case .success(let loginResult):
-                print("Successful login. TokenId: \(loginResult.tokenId)")
-                token = loginResult.token!
+            case let .success(token, tokenId):
+                print("Successful login. TokenId: \(tokenId)")
+                accessToken = token
             }
+
+            print(accessToken)
         } catch {
             print(error)
         }

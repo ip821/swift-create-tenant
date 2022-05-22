@@ -6,8 +6,7 @@ public struct HttpError: Error {
     let status: HTTPResponseStatus
 }
 
-public extension HttpResponseResult where T: Decodable{
-
+public extension HttpResponseResult where T: Decodable {
     func unwrapHttpResponse() throws -> T {
         switch self {
 
