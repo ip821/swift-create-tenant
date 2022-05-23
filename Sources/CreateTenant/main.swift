@@ -20,16 +20,6 @@ struct App {
 
         let httpClient = HttpClient(url: arguments.url)
 
-        defer {
-            do {
-                print("HTTP is shutting down...")
-                try httpClient.shutdown()
-                print("HTTP shutdown completed.")
-            } catch {
-                print("HTTP shutdown failed: \(error)")
-            }
-        }
-
         do {
             print("Login...");
             let loginResponse = try await httpClient.login(

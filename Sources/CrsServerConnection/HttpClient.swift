@@ -13,6 +13,12 @@ public class HttpClient {
         httpClient = AsyncHTTPClient.HTTPClient(eventLoopGroupProvider: .createNew)
     }
 
+    deinit {
+        print("HTTP is shutting down...")
+        try! httpClient.syncShutdown()
+        print("HTTP shutdown completed.")
+    }
+
     public func call<TRequest: Encodable, TResponse: Decodable>(
             _ apiUrlPart: String,
             _ request: TRequest,
@@ -35,9 +41,4 @@ public class HttpClient {
         let httpResponse = try await httpClient.execute(httpRequest, timeout: .seconds(5))
         return try await HttpResponseResult<TResponse>(httpResponse: httpResponse)
     }
-
-    public func shutdown() throws {
-        try httpClient.syncShutdown()
-    }
-
 }
