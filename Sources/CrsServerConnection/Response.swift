@@ -3,9 +3,6 @@ import Foundation
 public enum ErrorOrValue<T: Decodable>: Decodable {
     case success(value: T)
     case error(error: GenericError)
-}
-
-extension ErrorOrValue {
 
     enum CodingKeys: String, CodingKey {
         case success = "value"

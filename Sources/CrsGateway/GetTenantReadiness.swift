@@ -13,7 +13,7 @@ public struct GetTenantReadinessRequest: Encodable {
 public struct TenantReadyResultKind: Decodable, OptionSet {
     public let rawValue: Int
 
-    public static let ready = TenantReadyResultKind(rawValue: 0)
+    public static let ready = TenantReadyResultKind([])
     public static let awaitingDatabases = TenantReadyResultKind(rawValue: 1)
     public static let awaitingModelInits = TenantReadyResultKind(rawValue: 2)
     public static let awaitingMetadata = TenantReadyResultKind(rawValue: 4)
