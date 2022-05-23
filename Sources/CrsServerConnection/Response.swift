@@ -1,7 +1,3 @@
-//
-// Created by Igor Palkin on 22.05.2022.
-//
-
 import Foundation
 
 public enum ErrorOrValue<T: Decodable>: Decodable {
