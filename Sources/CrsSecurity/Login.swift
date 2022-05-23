@@ -3,7 +3,7 @@
 //
 
 import Foundation
-import AsyncHTTPClient
+import CrsServerConnection
 
 public extension HttpClient {
 
@@ -17,7 +17,6 @@ public extension HttpClient {
                         LoginRequest(tenantDomainName: tenantDomainName, userNameOrEMail: userNameOrEMail, password: password),
                         responseType: LoginResult.self
                 )
-                .unwrapHttpResponse()
-                .unwrapErrorOrValue()
+                .unwrap()
     }
 }

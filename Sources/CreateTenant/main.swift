@@ -1,4 +1,5 @@
-import ServerConnection
+import CrsServerConnection
+import CrsSecurity
 
 let url = "http://10.120.153.103:9000"
 
@@ -9,7 +10,9 @@ struct App {
 
         defer {
             do {
+                print("HTTP is shutting down...")
                 try httpClient.shutdown()
+                print("HTTP shutdown completed.")
             } catch {
             }
         }

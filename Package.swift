@@ -15,14 +15,19 @@ let package = Package(
             // Targets are the basic building blocks of a package. A target can define a module or a test suite.
             // Targets can depend on other targets in this package, and on products in packages this package depends on.
             .target(
-                    name: "ServerConnection",
+                    name: "CrsServerConnection",
                     dependencies: [
                         .product(name: "AsyncHTTPClient", package: "async-http-client")
+                    ]),
+            .target(
+                    name: "CrsSecurity",
+                    dependencies: [
+                        .target(name: "CrsServerConnection")
                     ]),
             .executableTarget(
                     name: "CreateTenant",
                     dependencies: [
-                        .target(name: "ServerConnection")
+                        .target(name: "CrsSecurity")
                     ]),
             .testTarget(
                     name: "CreateTenantTests",

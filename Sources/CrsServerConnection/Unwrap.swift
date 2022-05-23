@@ -6,8 +6,18 @@ public struct HttpError: Error {
     let status: HTTPResponseStatus
 }
 
+public struct CrsError: Error {
+    let errorCode: Int
+}
+
 public extension HttpResponseResult where T: Decodable {
-    func unwrapHttpResponse() throws -> T {
+    func unwrap() throws -> T {
+        try unwrapHttpResponse().unwrapErrorOrValue()
+    }
+}
+
+extension HttpResponseResult where T: Decodable {
+    func unwrapHttpResponse() throws -> Response<T> {
         switch self {
 
         case .success(let result):
@@ -19,11 +29,7 @@ public extension HttpResponseResult where T: Decodable {
     }
 }
 
-public struct CrsError: Error {
-    let errorCode: Int
-}
-
-public extension Response where T: Decodable {
+extension Response where T: Decodable {
 
     func unwrapErrorOrValue() throws -> T {
         switch errorOrValue {

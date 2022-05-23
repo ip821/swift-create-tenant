@@ -5,7 +5,7 @@
 import Foundation
 import AsyncHTTPClient
 
-public typealias HttpResponseResult<T: Decodable> = HttpResult<Response<T>>
+public typealias HttpResponseResult<T: Decodable> = HttpResult<T>
 
 public class HttpClient {
 

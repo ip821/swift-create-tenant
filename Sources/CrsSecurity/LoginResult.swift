@@ -22,7 +22,7 @@ public extension LoginResult {
         case resultCode = "resultCode"
     }
 
-    public init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let resultCode = try container.decode(LoginResultCode.self, forKey: CodingKeys.resultCode)
 
