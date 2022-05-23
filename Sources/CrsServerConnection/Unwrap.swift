@@ -6,8 +6,19 @@ public struct HttpError: Error {
     let status: HTTPResponseStatus
 }
 
-public struct CrsError: Error {
-    let errorCode: Int
+public struct CrsError: Error, CustomStringConvertible {
+
+    let errorCode: ErrorCode
+    let message: String
+
+    init(error: GenericError) {
+        errorCode = error.errorCode
+        message = error.message
+    }
+
+    public var description: String {
+        "\(errorCode): \(message)"
+    }
 }
 
 public extension HttpResponseResult where T: Decodable {
@@ -16,7 +27,7 @@ public extension HttpResponseResult where T: Decodable {
     }
 }
 
-extension HttpResponseResult where T: Decodable {
+public extension HttpResponseResult where T: Decodable {
     func unwrapHttpResponse() throws -> Response<T> {
         switch self {
 
@@ -29,16 +40,16 @@ extension HttpResponseResult where T: Decodable {
     }
 }
 
-extension Response where T: Decodable {
+public extension Response where T: Decodable {
 
     func unwrapErrorOrValue() throws -> T {
         switch errorOrValue {
 
-        case .success(value: let value):
+        case let .success(value):
             return value
 
-        case .error(errorCode: let errorCode):
-            throw CrsError(errorCode: errorCode)
+        case let .error(error):
+            throw CrsError(error: error)
         }
     }
 

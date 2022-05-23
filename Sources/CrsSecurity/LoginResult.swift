@@ -1,15 +1,5 @@
 import Foundation
 
-public enum LoginResultCode: Int, Decodable {
-    case success = 1
-    case invalidCredentials = 2
-    case userDisabled = 3
-    case ipBlocked = 4
-    case oneTimePasswordIsRequired = 5
-    case invalidOneTimePassword = 6
-    case waitBeforeNextAttempt = 7
-}
-
 public enum LoginResult: Decodable {
     case success(token: String, tokenId: String)
     case failed(errorCode: LoginResultCode)

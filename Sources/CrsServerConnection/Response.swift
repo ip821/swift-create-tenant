@@ -2,7 +2,7 @@ import Foundation
 
 public enum ErrorOrValue<T: Decodable>: Decodable {
     case success(value: T)
-    case error(errorCode: Int)
+    case error(error: GenericError)
 }
 
 extension ErrorOrValue {
@@ -14,13 +14,13 @@ extension ErrorOrValue {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let value: T? = try container.decode(T?.self, forKey: CodingKeys.success)
-        let errorCode: Int? = try container.decode(Int?.self, forKey: CodingKeys.error)
+        let error = try container.decodeIfPresent(GenericError.self, forKey: CodingKeys.error)
 
-        if let value = value {
-            self = .success(value: value)
+        if let decodedError = error {
+            self = .error(error: decodedError)
         } else {
-            self = .error(errorCode: errorCode!)
+            let value: T = try container.decode(T.self, forKey: CodingKeys.success)
+            self = .success(value: value)
         }
     }
 }
@@ -28,4 +28,8 @@ extension ErrorOrValue {
 public struct Response<T: Decodable>: Decodable {
     public let modelType: String
     public let errorOrValue: ErrorOrValue<T>
+}
+
+public struct UnitType: Decodable {
+
 }

@@ -9,7 +9,8 @@ let package = Package(
             .macOS(.v10_15)
         ],
         dependencies: [
-            .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.9.0")
+            .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.9.0"),
+            .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.0.0"))
         ],
         targets: [
             // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -24,10 +25,23 @@ let package = Package(
                     dependencies: [
                         .target(name: "CrsServerConnection")
                     ]),
+            .target(
+                    name: "CrsAppBuilder",
+                    dependencies: [
+                        .target(name: "CrsServerConnection")
+                    ]),
+            .target(
+                    name: "CrsGateway",
+                    dependencies: [
+                        .target(name: "CrsServerConnection")
+                    ]),
             .executableTarget(
                     name: "CreateTenant",
                     dependencies: [
-                        .target(name: "CrsSecurity")
+                        .target(name: "CrsSecurity"),
+                        .target(name: "CrsGateway"),
+                        .target(name: "CrsAppBuilder"),
+                        "Rainbow"
                     ]),
             .testTarget(
                     name: "CreateTenantTests",
