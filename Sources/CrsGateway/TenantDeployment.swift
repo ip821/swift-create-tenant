@@ -7,7 +7,7 @@ public extension HttpClient {
             authentication token: String,
             name: String,
             tenantKind: TenantKind
-    ) async throws -> HttpResponseResult<TenantReadinessResult> {
+    ) async throws -> Response<TenantReadinessResult> {
         try await call(
                 "/api/gateway/tenantDeployment/getTenantReadiness",
                 GetTenantReadinessRequest(tenantKind: tenantKind, tenantName: name),

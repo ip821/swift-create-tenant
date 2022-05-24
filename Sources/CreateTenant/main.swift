@@ -26,7 +26,7 @@ struct App {
                             userNameOrEMail: arguments.user,
                             password: arguments.password
                     )
-                    .unwrap()
+                    .unwrapErrorOrValue()
 
             let accessToken: String
 
@@ -42,7 +42,7 @@ struct App {
 
             print("Retrieve features...");
             let features = try await httpClient.getAllFeatures(authentication: accessToken)
-                    .unwrap()
+                    .unwrapErrorOrValue()
 
             let featureIds = features.map { feature in
                 feature.id
@@ -56,7 +56,7 @@ struct App {
                             name: templateName,
                             with: featureIds
                     )
-                    .unwrap()
+                    .unwrapErrorOrValue()
 
             print("Waiting for template \(templateName)...");
 
@@ -76,7 +76,7 @@ struct App {
                             authentication: accessToken,
                             name: tenantName,
                             templateId: templateId)
-                    .unwrap()
+                    .unwrapErrorOrValue()
 
             print("Waiting for tenant \(tenantName)...");
 

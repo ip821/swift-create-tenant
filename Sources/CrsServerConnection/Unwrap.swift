@@ -1,10 +1,8 @@
 import Foundation
-import AsyncHTTPClient
-import NIOHTTP1
 
-public struct HttpError: Error {
-    let status: HTTPResponseStatus
-}
+//public struct HttpError: Error {
+//    let status: HTTPResponseStatus
+//}
 
 public struct CrsError: Error, CustomStringConvertible {
 
@@ -21,24 +19,24 @@ public struct CrsError: Error, CustomStringConvertible {
     }
 }
 
-public extension HttpResponseResult where T: Decodable {
-    func unwrap() throws -> T {
-        try unwrapHttpResponse().unwrapErrorOrValue()
-    }
-}
+//public extension HttpResponseResult where T: Decodable {
+//    func unwrap() throws -> T {
+//        try unwrapHttpResponse().unwrapErrorOrValue()
+//    }
+//}
 
-public extension HttpResponseResult where T: Decodable {
-    func unwrapHttpResponse() throws -> Response<T> {
-        switch self {
-
-        case .success(let result):
-            return result
-
-        case .error(let status):
-            throw HttpError(status: status)
-        }
-    }
-}
+//public extension HttpResponseResult where T: Decodable {
+//    func unwrapHttpResponse() throws -> Response<T> {
+//        switch self {
+//
+//        case .success(let result):
+//            return result
+//
+//        case .error(let status):
+//            throw HttpError(status: status)
+//        }
+//    }
+//}
 
 public extension Response where T: Decodable {
 

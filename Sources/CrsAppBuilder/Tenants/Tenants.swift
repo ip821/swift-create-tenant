@@ -7,7 +7,7 @@ public extension HttpClient {
             authentication token: String,
             name: String,
             templateId: Int
-    ) async throws -> HttpResponseResult<Int> {
+    ) async throws -> Response<Int> {
         try await call(
                 "/api/appBuilder/tenant/createTenant",
                 CreateTenantCommand(

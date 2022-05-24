@@ -3,7 +3,7 @@ import CrsServerConnection
 
 public extension HttpClient {
 
-    func getAllFeatures(authentication token: String) async throws -> HttpResponseResult<[Feature]> {
+    func getAllFeatures(authentication token: String) async throws -> Response<[Feature]> {
         try await self.call(
                         "/api/appBuilder/feature/getAllFeatures",
                         EmptyRequest(),
