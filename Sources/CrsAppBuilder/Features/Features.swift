@@ -8,7 +8,7 @@ public extension HttpClient {
                         "/api/appBuilder/feature/getAllFeatures",
                         EmptyRequest(),
                         authentication: token,
-                        responseType: [Feature].self
+                        responseType: Response<[Feature]>.self
                 )
     }
 

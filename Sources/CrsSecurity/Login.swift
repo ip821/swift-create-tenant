@@ -11,7 +11,7 @@ public extension HttpClient {
         try await self.call(
                         "/api/security/authentication/login",
                         LoginRequest(tenantDomainName: tenantDomainName, userNameOrEMail: userNameOrEMail, password: password),
-                        responseType: LoginResult.self
+                        responseType: Response<LoginResult>.self
                 )
     }
 }

@@ -12,7 +12,7 @@ public extension HttpClient {
                 "/api/gateway/tenantDeployment/getTenantReadiness",
                 GetTenantReadinessRequest(tenantKind: tenantKind, tenantName: name),
                 authentication: token,
-                responseType: TenantReadinessResult.self
+                responseType: Response<TenantReadinessResult>.self
         )
     }
 

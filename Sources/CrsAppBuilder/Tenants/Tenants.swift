@@ -16,7 +16,7 @@ public extension HttpClient {
                         tenantName: name
                 ),
                 authentication: token,
-                responseType: Int.self
+                responseType: Response<Int>.self
         )
     }
 

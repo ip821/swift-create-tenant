@@ -22,7 +22,13 @@ public enum ErrorOrValue<T: Decodable>: Decodable {
     }
 }
 
-public struct Response<T: Decodable>: Decodable {
+public protocol IResponse: Decodable {
+    associatedtype T where T: Decodable
+    var errorOrValue: ErrorOrValue<T> { get }
+
+}
+
+public struct Response<T: Decodable>: Decodable, IResponse {
     public let modelType: String
     public let errorOrValue: ErrorOrValue<T>
 }

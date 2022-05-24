@@ -12,7 +12,7 @@ public extension HttpClient {
                 "/api/appBuilder/template/createTemplate",
                 CreateTemplateCommand(name, featureIds),
                 authentication: token,
-                responseType: Int.self
+                responseType: Response<Int>.self
         )
     }
 
