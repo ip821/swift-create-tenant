@@ -4,6 +4,8 @@ import CrsAppBuilder
 import CrsGateway
 import Rainbow
 
+_runAsyncMain(App.main)
+
 let usage = """
             Usage: create-tenant tenant_name url user password
             """
@@ -21,22 +23,8 @@ struct App {
         let httpClient = HttpClient(url: arguments.url)
 
         do {
-            print("Login...");
-            let loginResponse = try await httpClient.login(
-                            userNameOrEMail: arguments.user,
-                            password: arguments.password)
-                    .unwrapErrorOrValue()
-
-            let accessToken: String
-
-            switch loginResponse {
-            case let .failed(errorCode):
-                print("\("Login failed, error code: \(errorCode)".red)")
+            guard let accessToken = try await httpClient.loginToDefaultTenant(arguments.user, arguments.password) else {
                 return
-
-            case let .success(token, tokenId):
-                print("Successful login. TokenId: \(tokenId)")
-                accessToken = token
             }
 
             print("Retrieve features...");
@@ -50,40 +38,21 @@ struct App {
 
             let templateName = arguments.tenant
 
-            print("Create template \(templateName)...");
-            let templateId = try await httpClient.createTemplate(
-                            authentication: accessToken,
-                            name: templateName,
-                            with: featureIds
-                    )
-                    .unwrapErrorOrValue()
-
-            print("Waiting for template \(templateName)...");
-
-            let templateReady = try await httpClient.wait(
+            let createdTemplateId = try await httpClient.createTemplateAndWait(
                     authentication: accessToken,
-                    forTenant: templateName,
-                    andKind: .template)
+                    templateName: templateName,
+                    with: featureIds);
 
-            if !templateReady {
+            guard let templateId = createdTemplateId else {
                 return
             }
 
             let tenantName = templateName + "t"
 
-            print("Create tenant \(tenantName)...");
-            _ = try await httpClient.createTenant(
-                            authentication: accessToken,
-                            name: tenantName,
-                            templateId: templateId)
-                    .unwrapErrorOrValue()
-
-            print("Waiting for tenant \(tenantName)...");
-
-            let tenantReady = try await httpClient.wait(
+            let tenantReady = try await httpClient.createTenantAndWait(
                     authentication: accessToken,
-                    forTenant: tenantName,
-                    andKind: .tenant)
+                    tenantName: tenantName,
+                    templateId: templateId)
 
             print(tenantReady
                     ? "\("Tenant created!".green)"
@@ -93,5 +62,3 @@ struct App {
         }
     }
 }
-
-_runAsyncMain(App.main)
