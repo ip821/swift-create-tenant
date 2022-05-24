@@ -24,15 +24,14 @@ struct App {
             print("Login...");
             let loginResponse = try await httpClient.login(
                             userNameOrEMail: arguments.user,
-                            password: arguments.password
-                    )
-                    .unwrap()
+                            password: arguments.password)
+                    .unwrapErrorOrValue()
 
             let accessToken: String
 
             switch loginResponse {
             case let .failed(errorCode):
-                print("Login failed, error code: \(errorCode)")
+                print("\("Login failed, error code: \(errorCode)".red)")
                 return
 
             case let .success(token, tokenId):
@@ -41,8 +40,9 @@ struct App {
             }
 
             print("Retrieve features...");
-            let features = try await httpClient.getAllFeatures(authentication: accessToken)
-                    .unwrap()
+            let features = try await httpClient
+                    .getAllFeatures(authentication: accessToken)
+                    .unwrapErrorOrValue()
 
             let featureIds = features.map { feature in
                 feature.id
@@ -56,7 +56,7 @@ struct App {
                             name: templateName,
                             with: featureIds
                     )
-                    .unwrap()
+                    .unwrapErrorOrValue()
 
             print("Waiting for template \(templateName)...");
 
@@ -76,7 +76,7 @@ struct App {
                             authentication: accessToken,
                             name: tenantName,
                             templateId: templateId)
-                    .unwrap()
+                    .unwrapErrorOrValue()
 
             print("Waiting for tenant \(tenantName)...");
 
@@ -89,7 +89,7 @@ struct App {
                     ? "\("Tenant created!".green)"
                     : "\("Tenant is not created!".red))")
         } catch {
-            print(error)
+            print("\(error)".red)
         }
     }
 }

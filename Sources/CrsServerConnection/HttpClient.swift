@@ -1,44 +1,37 @@
 import Foundation
-import AsyncHTTPClient
-
-public typealias HttpResponseResult<T: Decodable> = HttpResult<T>
+import HTTPClient
 
 public class HttpClient {
 
     let url: String
-    let httpClient: AsyncHTTPClient.HTTPClient
+    let httpClient: HTTPClient
 
     public init(url: String) {
         self.url = url
-        httpClient = AsyncHTTPClient.HTTPClient(eventLoopGroupProvider: .createNew)
+        httpClient = HTTPClient(baseURLString: url)
     }
 
-    deinit {
-        print("HTTP is shutting down...")
-        try! httpClient.syncShutdown()
-        print("HTTP shutdown completed.")
-    }
-
-    public func call<TRequest: Encodable, TResponse: Decodable>(
+    public func call<TRequest: Encodable, TResponse: IResponse>(
             _ apiUrlPart: String,
             _ request: TRequest,
             authentication token: String? = nil,
             responseType: TResponse.Type
-    )
-            async throws
-            -> HttpResponseResult<TResponse> {
-        let encodedBody = try JSONEncoder().encode(request)
+    ) async throws -> TResponse {
+        var httpHeaders: [HTTPHeaderField: String] = [:]
 
-        var httpRequest = HTTPClientRequest(url: url + apiUrlPart)
-        httpRequest.method = .POST
-        httpRequest.body = .bytes(encodedBody)
-        httpRequest.headers.add(name: "Content-Type", value: "application/json")
+        httpHeaders[.contentType] = ContentType.applicationJson.rawValue
 
         if let accessToken = token {
-            httpRequest.headers.add(name: "Authorization", value: accessToken)
+            httpHeaders[.authorization] = accessToken
         }
 
-        let httpResponse = try await httpClient.execute(httpRequest, timeout: .seconds(5))
-        return try await HttpResponseResult<TResponse>(httpResponse: httpResponse)
+        let httpRequest = HttpRequest(
+                path: apiUrlPart,
+                headers: httpHeaders,
+                responseType: TResponse.self
+        )
+
+        let responseBody = try await httpClient.request(httpRequest, requestBody: request)
+        return responseBody
     }
 }

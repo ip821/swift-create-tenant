@@ -7,11 +7,11 @@ public extension HttpClient {
             tenantDomainName: String = "",
             userNameOrEMail: String,
             password: String
-    ) async throws -> HttpResponseResult<LoginResult> {
+    ) async throws -> Response<LoginResult> {
         try await self.call(
                         "/api/security/authentication/login",
                         LoginRequest(tenantDomainName: tenantDomainName, userNameOrEMail: userNameOrEMail, password: password),
-                        responseType: LoginResult.self
+                        responseType: Response<LoginResult>.self
                 )
     }
 }

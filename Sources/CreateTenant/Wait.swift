@@ -20,7 +20,6 @@ extension HttpClient {
                     name: tenantName,
                     tenantKind: tenantKind
             )
-                    .unwrapHttpResponse()
 
             if case let .error(error) = templateResponse.errorOrValue {
                 print("[\(i)/\(maxAttempts)] \(tenantKind) status: \(error)")

@@ -7,16 +7,17 @@ public extension HttpClient {
             authentication token: String,
             name: String,
             templateId: Int
-    ) async throws -> HttpResponseResult<Int> {
-        try await call(
+    ) async throws -> Response<Int> {
+        let command = CreateTenantCommand(
+                templateId: templateId,
+                tenantDomainName: name,
+                tenantName: name
+        )
+        return try await call(
                 "/api/appBuilder/tenant/createTenant",
-                CreateTenantCommand(
-                        templateId: templateId,
-                        tenantDomainName: name,
-                        tenantName: name
-                ),
+                command,
                 authentication: token,
-                responseType: Int.self
+                responseType: Response<Int>.self
         )
     }
 

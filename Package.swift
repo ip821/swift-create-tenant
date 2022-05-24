@@ -9,7 +9,7 @@ let package = Package(
             .macOS(.v10_15)
         ],
         dependencies: [
-            .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.9.0"),
+            .package(url: "https://github.com/uhooi/swift-http-client", .upToNextMajor(from: "0.6.0")),
             .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.0.0"))
         ],
         targets: [
@@ -18,7 +18,7 @@ let package = Package(
             .target(
                     name: "CrsServerConnection",
                     dependencies: [
-                        .product(name: "AsyncHTTPClient", package: "async-http-client")
+                        .product(name: "HTTPClient", package: "swift-http-client"),
                     ]),
             .target(
                     name: "CrsSecurity",
@@ -43,8 +43,8 @@ let package = Package(
                         .target(name: "CrsAppBuilder"),
                         "Rainbow"
                     ]),
-            .testTarget(
-                    name: "CreateTenantTests",
-                    dependencies: ["CreateTenant"]),
+//            .testTarget(
+//                    name: "CreateTenantTests",
+//                    dependencies: ["CreateTenant"]),
         ]
 )
