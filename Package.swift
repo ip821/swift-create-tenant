@@ -43,8 +43,8 @@ let package = Package(
                         .target(name: "CrsAppBuilder"),
                         "Rainbow"
                     ]),
-            .testTarget(
-                    name: "CreateTenantTests",
-                    dependencies: ["CreateTenant"]),
+//            .testTarget(
+//                    name: "CreateTenantTests",
+//                    dependencies: ["CreateTenant"]),
         ]
 )

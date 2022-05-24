@@ -8,9 +8,10 @@ public extension HttpClient {
             name: String,
             with featureIds: [Int]
     ) async throws -> Response<Int> {
-        try await call(
+        let command = CreateTemplateCommand(name, featureIds)
+        return try await call(
                 "/api/appBuilder/template/createTemplate",
-                CreateTemplateCommand(name, featureIds),
+                command,
                 authentication: token,
                 responseType: Response<Int>.self
         )
