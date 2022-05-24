@@ -21,7 +21,10 @@ struct App {
         let httpClient = HttpClient(url: arguments.url)
 
         do {
-            guard let accessToken = try await httpClient.loginToDefaultTenant(arguments.user, arguments.password) else {
+            guard let accessToken = try await httpClient.loginToDefaultTenant(
+                    arguments.user,
+                    arguments.password)
+            else {
                 return
             }
 
