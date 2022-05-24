@@ -38,25 +38,27 @@ struct App {
 
             let templateName = arguments.tenant
 
-            let createdTemplateId = try await httpClient.createTemplateAndWait(
+            guard let templateId = try await httpClient.createTemplateAndWait(
                     authentication: accessToken,
                     templateName: templateName,
-                    with: featureIds);
-
-            guard let templateId = createdTemplateId else {
+                    with: featureIds)
+            else {
                 return
             }
 
             let tenantName = templateName + "t"
 
-            let tenantReady = try await httpClient.createTenantAndWait(
+            guard try await httpClient.createTenantAndWait(
                     authentication: accessToken,
                     tenantName: tenantName,
                     templateId: templateId)
+            else {
+                print("Tenant is not created!".red)
+                return
+            }
 
-            print(tenantReady
-                    ? "\("Tenant created!".green)"
-                    : "\("Tenant is not created!".red))")
+            print("Tenant created!".green)
+
         } catch {
             print("\(error)".red)
         }
