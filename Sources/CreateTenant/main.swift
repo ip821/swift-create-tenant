@@ -13,9 +13,7 @@ let usage = """
 struct App {
     static func main() async throws {
 
-        let parsedArgs = CommandLine.parse()
-
-        guard let arguments = parsedArgs else {
+        guard let arguments = CommandLine.parse() else {
             print(usage)
             return
         }
