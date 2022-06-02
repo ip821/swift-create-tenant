@@ -6,11 +6,12 @@ import Rainbow
 
 _runAsyncMain(App.main)
 
-let usage = """
-            Usage: CreateTenant tenant_name url user password
-            """
-
 struct App {
+
+    static let usage = """
+                       Usage: CreateTenant tenant_name url user password
+                       """
+
     static func main() async throws {
 
         print("Program started with arguments: \(CommandLine.arguments)")
