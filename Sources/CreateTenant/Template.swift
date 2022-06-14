@@ -24,6 +24,6 @@ extension HttpClient {
                 forTenant: templateName,
                 andKind: .template)
 
-        return templateReady ? templateId : .none
+        return templateReady ? templateId : nil
     }
 }
