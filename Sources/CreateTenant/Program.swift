@@ -31,6 +31,7 @@ class Program {
                     templateName: templateName,
                     with: featureIds)
             else {
+                print("Template is not created!".red)
                 return
             }
 
