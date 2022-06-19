@@ -2,14 +2,22 @@ import Foundation
 import CrsServerConnection
 import CrsSecurity
 
-extension HttpClient {
-    func loginToDefaultTenant(
+class LoginFacade {
+
+    private let httpClient: HttpClient
+
+    init(httpClient: HttpClient) {
+        self.httpClient = httpClient
+    }
+
+    func toDefaultTenant(
             _ userName: String,
             _ password: String
     ) async throws -> String? {
 
         print("Login...");
-        let loginResponse = try await login(
+        let loginResponse = try await httpClient
+                .login(
                         userNameOrEMail: userName,
                         password: password)
                 .unwrapErrorOrValue()

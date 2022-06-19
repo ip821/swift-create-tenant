@@ -1,16 +1,22 @@
 import Foundation
 import CrsServerConnection
 
-extension HttpClient {
+class TenantFacade {
 
-    func createTenantAndWait(
+    private let httpClient: HttpClient
+
+    init(httpClient: HttpClient) {
+        self.httpClient = httpClient
+    }
+
+    func createAndWaitReady(
             authentication token: String,
             tenantName: String,
-            templateId: Int
+            use templateId: Int
     ) async throws -> Bool {
 
         print("Create tenant \(tenantName)...");
-        _ = try await createTenant(
+        _ = try await httpClient.createTenant(
                 authentication: token,
                 name: tenantName,
                 templateId: templateId)
@@ -18,7 +24,7 @@ extension HttpClient {
 
         print("Waiting for tenant \(tenantName)...");
 
-        return try await wait(
+        return try await httpClient.waitForReady(
                 authentication: token,
                 forTenant: tenantName,
                 andKind: .tenant)

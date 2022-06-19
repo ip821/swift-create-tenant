@@ -3,7 +3,7 @@ import CrsGateway
 import CrsServerConnection
 
 extension HttpClient {
-    func wait(
+    func waitForReady(
             authentication token: String,
             forTenant tenantName: String,
             andKind tenantKind: TenantKind

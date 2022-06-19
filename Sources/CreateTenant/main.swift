@@ -3,6 +3,7 @@ import CrsSecurity
 import CrsAppBuilder
 import CrsGateway
 import Rainbow
+import Swinject
 
 _runAsyncMain(App.main)
 
@@ -21,50 +22,11 @@ struct App {
             return
         }
 
-        let httpClient = HttpClient(url: arguments.url)
+        let container = Container()
+        registerHttp(in: container, withUrl: arguments.url)
+        registerTypes(in: container)
 
-        do {
-            guard let accessToken = try await httpClient.loginToDefaultTenant(
-                    arguments.user,
-                    arguments.password)
-            else {
-                return
-            }
-
-            print("Retrieve features...");
-            let features = try await httpClient
-                    .getAllFeatures(authentication: accessToken)
-                    .unwrapErrorOrValue()
-
-            let featureIds = features.map { feature in
-                feature.id
-            }
-
-            let templateName = arguments.tenant
-
-            guard let templateId = try await httpClient.createTemplateAndWait(
-                    authentication: accessToken,
-                    templateName: templateName,
-                    with: featureIds)
-            else {
-                return
-            }
-
-            let tenantName = templateName + "t"
-
-            guard try await httpClient.createTenantAndWait(
-                    authentication: accessToken,
-                    tenantName: tenantName,
-                    templateId: templateId)
-            else {
-                print("Tenant is not created!".red)
-                return
-            }
-
-            print("Tenant created!".green)
-
-        } catch {
-            print("\(error)".red)
-        }
+        let program = container.resolve(Program.self)!
+        await program.execute(arguments)
     }
 }

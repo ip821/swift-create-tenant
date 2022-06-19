@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug CreateTenant",
+            "program": "${workspaceFolder:create-tenant}/.build/debug/CreateTenant",
+            "args": [],
+            "cwd": "${workspaceFolder:create-tenant}",
+            "preLaunchTask": "swift: Build Debug CreateTenant"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release CreateTenant",
+            "program": "${workspaceFolder:create-tenant}/.build/release/CreateTenant",
+            "args": [],
+            "cwd": "${workspaceFolder:create-tenant}",
+            "preLaunchTask": "swift: Build Release CreateTenant"
+        }
+    ]
+}

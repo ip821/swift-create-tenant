@@ -9,6 +9,7 @@ let package = Package(
             .macOS(.v10_15)
         ],
         dependencies: [
+            .package(url: "https://github.com/Swinject/Swinject.git", from: "2.8.0"),
             .package(url: "https://github.com/uhooi/swift-http-client", .upToNextMajor(from: "0.6.0")),
             .package(url: "https://github.com/onevcat/Rainbow", .upToNextMajor(from: "4.0.0"))
         ],
@@ -41,7 +42,8 @@ let package = Package(
                         .target(name: "CrsSecurity"),
                         .target(name: "CrsGateway"),
                         .target(name: "CrsAppBuilder"),
-                        "Rainbow"
+                        "Rainbow",
+                        "Swinject"
                     ]),
 //            .testTarget(
 //                    name: "CreateTenantTests",
