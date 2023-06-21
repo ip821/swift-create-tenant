@@ -4,29 +4,22 @@ import CrsAppBuilder
 import CrsGateway
 import Rainbow
 import Swinject
+import Foundation
 
-_runAsyncMain(App.main)
+let usage = """
+                   Usage: CreateTenant tenant_name url user password
+                   """
 
-struct App {
+print("Program started with arguments: \(CommandLine.arguments)")
 
-    static let usage = """
-                       Usage: CreateTenant tenant_name url user password
-                       """
-
-    static func main() async throws {
-
-        print("Program started with arguments: \(CommandLine.arguments)")
-
-        guard let arguments = CommandLine.parse() else {
-            print(usage)
-            return
-        }
-
-        let container = Container()
-        registerHttp(in: container, withUrl: arguments.url)
-        registerTypes(in: container)
-
-        let program = container.resolve(Program.self)!
-        await program.execute(arguments)
-    }
+guard let arguments = CommandLine.parse() else {
+    print(usage)
+    exit(1)
 }
+
+let container = Container()
+registerHttp(in: container, withUrl: arguments.url)
+registerTypes(in: container)
+
+let program = container.resolve(Program.self)!
+await program.execute(arguments)
